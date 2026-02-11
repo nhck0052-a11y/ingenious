@@ -6,7 +6,7 @@
 
 **Core Concept:** An interactive web service that allows users to experience hypothetical alternate life paths based on different choices, simulated by AI. It aims to provide a unique "parallel world experience" that encourages self-reflection and highlights the impact of life choices.
 
-**Key Differentiator:** Unlike simple classification tests, this service generates a narrative-driven, personalized life simulation, offering a highly immersive and potentially viral experience. Inspired by high-quality interactive services, it will focus on deep personalization, clear value proposition, and immediate, tangible feedback for user choices.
+**Key Differentiator:** Unlike simple classification tests, this service generates a narrative-driven, personalized life simulation, offering a highly immersive and potentially viral experience. Inspired by high-quality interactive services like `mycolor.kr`, it will focus on deep personalization, rich content, interactive feedback, and demonstrating advanced AI capabilities.
 
 ## Detailed Outline: Style, Design, and Features
 
@@ -18,6 +18,7 @@
     *   Major/Job
     *   Personality (e.g., via simple questionnaire or keyword input)
     *   Current Worries/Concerns
+*   **Deeper Input - Worry Keywords:** Users will select or input relevant worry keywords (e.g., #이직, #짝사랑, #로또) to further personalize the simulation.
 *   **Life-Changing Choice Scenarios:** Users will select from predefined "what if" scenarios:
     *   "다른 대학을 갔으면?" (What if I went to a different university?)
     *   "창업을 했으면?" (What if I started a business?)
@@ -28,17 +29,21 @@
 
 ### 2. AI Simulation Output & Presentation
 
-*   **Narrative Storyline:** A personalized, natural-language story of the simulated life path for 5, 10, and 20 years in the future.
-*   **Data Report:**
-    *   **Career:** Job, estimated annual salary.
-    *   **Lifestyle:** Residential area, daily routine, hobbies.
-    *   **Relationships:** Love and marriage story.
-    *   **Major Life Events Timeline:** Key milestones and events presented chronologically.
+*   **Diversified Outcome:** Results will not be limited to simple text but will include:
+    *   **Narrative Storyline:** A personalized, natural-language story of the simulated life path for 5, 10, and 20 years in the future.
+    *   **Data Report:**
+        *   **Career:** Job, estimated annual salary.
+        *   **Lifestyle:** Residential area, daily routine, hobbies.
+        *   **Relationships:** Love and marriage story.
+        *   **Major Life Events Timeline:** Key milestones and events presented chronologically.
+    *   **Fate Index:** Quantified values (e.g., 재물운 80%, 연애운 20%) presented visually.
+    *   **Action Guidelines:** Specific, actionable tips related to the simulated destiny (e.g., "오늘 3시 이후에 파란색 옷을 입은 사람을 조심하세요").
 *   **Visualizations:**
-    *   **Illustrations/Images:** AI-generated visuals for future appearance, living environment, daily scenes to enhance immersion.
-    *   **Infographics:** Simple charts/graphs for salary trends, lifestyle metrics.
+    *   **Illustrations/Images:** AI-generated visuals for future appearance, living environment, daily scenes to enhance immersion. This includes an **'운명의 이미지' (Image of Destiny)** generated via an image generation API.
+    *   **Infographics:** Simple charts/graphs for salary trends, lifestyle metrics, and visual representation of Fate Indices (e.g., bar graphs).
 *   **Shareable Content:**
-    *   Card-style result image optimized for SNS sharing (Instagram, TikTok, YouTube Shorts).
+    *   Card-style result image optimized for SNS sharing (Instagram, TikTok, YouTube Shorts), featuring key fate indicators and the Image of Destiny.
+*   **Business Model (BM) Suggestion:** Placeholder button/text in the results to demonstrate monetization potential (e.g., "당신의 운명을 바꿀 부적 구매하기").
 
 ### 3. Monetization Strategy (Future Expansion)
 
@@ -54,60 +59,60 @@
 ### 4. Technical Approach
 
 *   **Frontend:** Vite + React (TypeScript), modern HTML/CSS/JavaScript (Web Components, CSS variables, ES Modules, async/await, fetch API). Mobile-responsive design.
-*   **Backend:**
-    *   **Large Language Models (LLM):** For dynamic and natural story generation, highly personalized to user inputs.
-    *   **Probabilistic/Statistical Models:** For realistic simulation of job, salary, lifestyle changes.
-    *   **Image Generation AI:** For visually rich and immersive portrayal of future scenarios.
-    *   **Choice Tree Structure:** For robust multi-scenario generation, allowing diverse pathways.
-*   **Hosting:** Firebase (for frontend hosting and potentially serverless functions for backend integration).
+*   **Backend (Firebase Functions):**
+    *   **LLM Integration (Story Generation & Content Diversification):** Utilize Gemini API for natural story generation, fate indices, and action guidelines based on complex prompts and user inputs.
+    *   **Function Calling:** Implement mechanisms for AI to trigger external tools, such as saving results to a file.
+    *   **Multimodal Integration (Image Generation):** Connect with an image generation API (e.g., Stable Diffusion, DALL-E) to produce "Images of Destiny."
+    *   **Probabilistic/Statistical Models:** For realistic simulation of job, salary, residential area, lifestyle, and relationships.
+    *   **Conversation Context (Memory):** Implement a robust system to maintain and utilize previous conversation context for more coherent and personalized responses.
+*   **Hosting:** Firebase (for frontend hosting and serverless functions for backend and AI integration).
 
-### 5. UI/UX Principles (Refined with MyColor.kr Insights)
+### 5. UI/UX Principles (Refined with MyColor.kr & New Requirements)
 
 *   **Intuitive & Timeline-Centric:** Easy navigation to view life changes across 5, 10, 20 years. The flow from input to results should be seamless and engaging.
-*   **Visually Engaging:** Clean, modern aesthetic with a "multiverse" theme. Use of expressive typography, vibrant color palette, subtle textures, and multi-layered drop shadows. **Focus on high-quality, personalized visual feedback that immediately shows the impact of choices.**
-*   **Interactive & Dynamic:** Buttons, sliders, and other UI components with elegant use of color and glow effects. **The process of making choices and revealing results should feel interactive and direct, providing immediate gratification.**
-*   **Personalization at Core:** The entire experience will revolve around "my parallel life." User inputs should tangibly affect the generated story and visuals, fostering a strong sense of ownership and uniqueness.
-*   **Clear Value Proposition:** The service will clearly communicate its unique ability to provide an AI-driven, narrative-based "digital life laboratory" for exploring life choices.
-*   **Credibility & Transparency:** While showcasing the fun, also subtly highlight the sophisticated AI/LLM models underpinning the simulations to build trust, similar to how MyColor.kr mentions "deep learning."
+*   **Visually Engaging & Dynamic:** Clean, modern aesthetic with a "multiverse" theme. Use of expressive typography, vibrant color palette, subtle textures, and multi-layered drop shadows. **Crucially, focus on high-quality, personalized visual feedback that immediately shows the impact of choices, including AI-generated images and dynamic data visualizations.**
+*   **Interactive & Immersive:** Buttons, sliders, and other UI components with elegant use of color and glow effects. **Introduce interactive elements like subtle screen glitches or sound effects upon result generation to heighten immersion.**
+*   **Personalization at Core:** The entire experience will revolve around "my parallel life." User inputs, including worry keywords, should tangibly affect the generated story, data, and visuals, fostering a strong sense of ownership and uniqueness.
+*   **Clear Value Proposition:** The service will clearly communicate its unique ability to provide an AI-driven, narrative-based "digital life laboratory" for exploring life choices, emphasizing the advanced AI at its core.
+*   **Credibility & Transparency:** Highlight the sophisticated AI/LLM models underpinning the simulations to build trust and demonstrate advanced capabilities.
 *   **Simplicity and Focus:** Maintain a streamlined user journey from input to result, minimizing cognitive load and maximizing engagement with the core simulation experience.
 *   **Accessibility (A11Y):** Designed to be accessible to a wide range of users.
-*   **Social Shareability:** Prominent SNS sharing features to drive virality. The shareable card will be a high-quality, appealing visual summary of the results.
-
-### 6. High-Quality Site Principles (from AdSense articles) Applied
-
-*   **User-Centric Design:** Every aspect from input to output will prioritize an engaging and meaningful user experience.
-*   **Unique Content:** The narrative-driven simulation itself is the unique content, highly personalized for each user.
-*   **Clear Navigation:** Users will easily understand how to input information and interpret results.
-*   **Quality over Quantity:** Focus on the depth and personalization of each simulation, even if it means fewer initial features.
-*   **Value Proposition:** Clearly communicate the value of self-reflection and exploring choices.
-*   **No Deceptive Practices:** All simulations will be presented as hypothetical scenarios.
+*   **Social Shareability:** Prominent SNS sharing features to drive virality. The shareable card will be a high-quality, appealing visual summary of the results, incorporating the "Image of Destiny."
+*   **Data Visualization:** Present complex "Fate Index" data clearly and engagingly using visual elements like bar graphs (e.g., `|||||-----`).
+*   **ASCII Art:** Incorporate creative ASCII art (e.g., crystal ball) during loading or result presentation for stylistic flair.
+*   **Responsive Optimization:** Ensure the entire application (CLI-like aesthetic on web) is mobile-responsive and functions flawlessly across different screen sizes.
 
 ---
 
 ## Current Status
 
-The frontend prototype, including user input forms and a placeholder results display with dummy data, has been successfully implemented and pushed to the remote repository.
+The frontend prototype, including user input forms and a placeholder results display with dummy data, has been successfully implemented and pushed to the remote repository. The backend environment for Firebase Functions has also been set up and pushed.
 
-## Next Steps: Integrating AI Logic (Conceptual Plan)
+## Next Steps: Implementing Advanced AI Logic & UI/UX
 
-1.  **Backend Service Design:**
-    *   Define the API endpoints for receiving user input and returning simulation results.
-    *   Outline the structure of the request (user data, chosen scenario) and response (life story, data points for 5, 10, 20 years, timeline, and potentially image generation prompts/URLs).
-    *   Consider using Firebase Functions or a similar serverless solution for the backend logic.
-2.  **LLM Integration (Story Generation):**
-    *   Identify a suitable LLM (e.g., Gemini API, OpenAI GPT) for generating the life stories based on user input and chosen scenario.
-    *   Develop detailed prompts for the LLM to ensure consistent, coherent, and highly personalized narrative generation for different timeframes (5, 10, 20 years), reflecting the specific chosen scenario and user personality.
-    *   Implement mechanisms for prompt engineering to guide the LLM's output towards the desired story structure and tone.
-3.  **Probabilistic/Statistical Model Development (Data Points):**
-    *   Design and implement algorithms to simulate changes in job, estimated salary, residential area, lifestyle, and relationships.
-    *   These models should factor in user's age, gender, current job/major, personality, and the chosen "what if" scenario.
-    *   Leverage publicly available demographic, economic, and career data to inform the statistical predictions, ensuring a degree of realism in the simulated data points.
-4.  **Image Generation AI Integration (Visuals):**
-    *   Explore options for integrating image generation AI (e.g., Stable Diffusion, DALL-E, Midjourney API if available) to create visual representations of the simulated future.
-    *   Develop automated prompt generation for the image AI based on the LLM-generated story and data points (e.g., "A 40-year-old female software engineer living in a modern apartment in Seoul, enjoying a hobby of gardening").
-    *   Implement image display and caching mechanisms in the frontend.
-5.  **Frontend-Backend Integration:**
-    *   Modify the `handleSimulate` function in `src/App.js` to make asynchronous API calls to the new backend service.
-    *   Implement robust error handling, loading states, and display the real AI-generated results dynamically.
-6.  **SNS Share Card Generation:**
-    *   Implement functionality to programmatically render the simulation results (story snippet, key data points, and the generated image) into a visually appealing image format for easy sharing on social media platforms. This might involve using a server-side image generation library or a frontend library like HTML2Canvas for client-side rendering.
+1.  **Backend - Function Calling for File Download:**
+    *   Implement a Firebase Function that generates and serves a `.txt` file containing the simulation results.
+    *   Integrate this function via Function Calling with the LLM.
+    *   Modify the frontend to trigger this function call and handle the file download.
+2.  **Backend - LLM Prompt Engineering for Richer Content:**
+    *   Refine the LLM prompts to generate dynamic "Fate Indices" and "Action Guidelines."
+    *   Ensure the narrative story is more detailed and incorporates "worry keywords" effectively.
+3.  **Backend - Multimodal Integration (Image Generation):**
+    *   Integrate a suitable Image Generation API (e.g., through a third-party service or a dedicated Firebase Function).
+    *   Develop logic to generate image prompts from the LLM's text output.
+    *   Return the image URL as part of the simulation results.
+4.  **Backend - Conversation Context (Memory):**
+    *   Implement a mechanism to store and retrieve conversation history (e.g., using Firestore or a simple in-memory store for short-term context).
+    *   Modify LLM prompts to include previous turns for more coherent responses.
+5.  **Frontend - Input UI for Worry Keywords:**
+    *   Add UI elements for selecting/inputting "worry keywords."
+6.  **Frontend - Result Display Enhancements:**
+    *   Display "Fate Indices" visually (e.g., with ASCII bar graphs).
+    *   Show "Action Guidelines" prominently.
+    *   Display the AI-generated "Image of Destiny."
+    *   Add the "BM Suggestion" (e.g., "당신의 운명을 바꿀 부적 구매하기" button).
+7.  **Frontend - Interactive UI/UX Elements:**
+    *   Implement ASCII art for loading/results.
+    *   Add subtle glitch effects and sound effects (beep) for engagement.
+8.  **Frontend - Responsive Optimization Testing & Refinements:**
+    *   Thoroughly test on various screen sizes and orientations, making adjustments as needed.

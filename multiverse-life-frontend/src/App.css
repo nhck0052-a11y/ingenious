@@ -151,7 +151,8 @@ body {
   transform: scale(1.2); /* Make radio button slightly larger */
 }
 
-.simulate-button {
+.simulate-button,
+.download-button { /* Apply common styles to both buttons */
   background-color: var(--primary-color);
   color: var(--text-light);
   border: none;
@@ -162,15 +163,18 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 20px; /* Add margin to separate from other elements */
 }
 
-.simulate-button:hover {
+.simulate-button:hover,
+.download-button:hover {
   background-color: #43a047; /* Slightly darker green */
   box-shadow: 0 6px 12px var(--button-hover-shadow);
   transform: translateY(-2px);
 }
 
-.simulate-button:active {
+.simulate-button:active,
+.download-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px var(--button-hover-shadow);
 }
@@ -225,6 +229,10 @@ body {
   margin-bottom: 20px;
   border-radius: 6px;
   line-height: 1.6;
+}
+
+.data-points {
+  margin-bottom: 20px;
 }
 
 .data-points p {
@@ -309,4 +317,3 @@ body {
     flex-wrap: wrap;
   }
 }
-

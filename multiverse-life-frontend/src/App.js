@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { httpsCallable } from "firebase/functions"; // Import httpsCallable
 import './App.css';
 
-function App() {
+function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
   const [formData, setFormData] = useState({
     age: '',
     gender: '',
@@ -23,31 +24,32 @@ function App() {
     setFormData({ ...formData, scenario: e.target.value });
   };
 
-  const handleSimulate = () => {
+  const const handleSimulate = () => {
     // --- Dummy Simulation Logic (will be replaced by actual AI call) ---
+    // This dummy data now uses formData.scenario for better representation
     const dummyResults = {
       '5years': {
-        story: "5년 후 당신은 선택한 시나리오에 따라 새로운 분야에서 역량을 발휘하며 안정적인 성장을 이루었습니다. 초기에는 어려움도 있었지만, 당신의 끈기와 노력이 빛을 발했습니다. 새로운 사람들과의 관계 속에서 삶의 활력을 찾고 있습니다.",
-        job: "주니어 데이터 분석가",
-        salary: "5천만원",
-        residence: "서울 교외 신축 아파트",
-        lifestyle: "주말에는 등산과 독서 모임에 참여하며 자기계발에 힘쓰는 라이프스타일",
-        relationships: "안정적인 연애 중",
+        story: `(AI 시뮬레이션 - 5년 후) 당신이 "${formData.scenario}" 선택했다면, 새로운 환경에서 역량을 발휘하며 안정적인 성장을 이루었습니다. 초기에는 어려움도 있었지만, 당신의 끈기와 노력이 빛을 발했습니다. 새로운 사람들과의 관계 속에서 삶의 활력을 찾고 있습니다.`,
+        job: "주니어 AI 전문가",
+        salary: "6천만원",
+        residence: "판교 테크노밸리 근처 소형 오피스텔",
+        lifestyle: "스타트업 문화에 푹 빠져 일과 성장에 몰두하는 삶",
+        relationships: "직장 동료들과의 돈독한 유대 형성, 새로운 인연을 기다리는 중",
         timeline: [
-          { year: '1년차', event: '새로운 분야 교육 이수 및 자격증 취득' },
-          { year: '2년차', event: '첫 이직 성공, 직무 만족도 상승' },
-          { year: '3년차', event: '주택 청약 당첨, 내 집 마련의 꿈 시작' },
-          { year: '4년차', event: '해외 배낭여행으로 견문 확장' },
-          { year: '5년차', event: '팀 프로젝트 성공으로 핵심 인재로 인정받음' },
+          { year: '1년차', event: `새로운 분야 학습 및 ${formData.scenario} 관련 프로젝트 참여` },
+          { year: '2년차', event: '핵심 팀원으로 인정받고 중요한 역할 수행' },
+          { year: '3년차', event: '첫 창업 제안을 받거나 이직 기회 모색' },
+          { year: '4년차', event: '자기 계발을 위한 해외 워크숍 참여' },
+          { year: '5년차', event: '업계 내에서 이름 알리기 시작, 멘토 역할 수행' },
         ],
       },
       '10years': {
-        story: "10년 후 당신은 해당 분야의 전문가로 성장하여 팀을 이끄는 리더가 되었습니다. 경제적인 여유를 바탕으로 투자에도 성공하여 안정적인 자산가로 발돋움했습니다. 가족과 함께 여유로운 시간을 보내며 삶의 진정한 의미를 찾아가고 있습니다.",
-        job: "시니어 데이터 분석가 / 팀 리더",
-        salary: "1억원",
-        residence: "서울 도심 고급 오피스텔",
-        lifestyle: "워라밸을 중시하며, 고급 문화생활과 해외여행을 즐기는 라이프스타일",
-        relationships: "결혼하여 행복한 가정을 꾸림",
+        story: `(AI 시뮬레이션 - 10년 후) 당신의 선택은 거대한 성공의 씨앗이 되어, 이제는 해당 분야의 선구자로 자리매김했습니다. 수많은 팔로워와 협력자가 당신의 비전을 따르며, 사회에 큰 영향력을 행사하고 있습니다. 여유와 함께 찾아온 책임감으로 더욱 겸손해질 것입니다.`,
+        job: "시니어 AI 분석가 / 팀 리더",
+        salary: "2억원 이상",
+        residence: "강남 고급 주상복합 아파트",
+        lifestyle: "성공한 사업가로서 사회적 책임감을 느끼며 워라밸을 추구하는 삶",
+        relationships: "오랜 연인과 결혼하여 안정적인 가정을 이룸",
         timeline: [
           { year: '6년차', event: '석사 학위 취득, 전문성 심화' },
           { year: '7년차', event: '해외 지사 파견, 글로벌 경험 축적' },
@@ -57,23 +59,56 @@ function App() {
         ],
       },
       '20years': {
-        story: "20년 후 당신은 시뮬레이션된 분야에서 성공적인 스타트업을 창업하여 사회에 긍정적인 영향력을 미치는 기업가가 되었습니다. 당신의 통찰력과 리더십으로 많은 사람에게 영감을 주고 있습니다. 은퇴 후에는 사회 공헌 활동에 집중하며 존경받는 삶을 살고 있습니다.",
-        job: "스타트업 CEO / 멘토",
-        salary: "3억원 이상",
-        residence: "제주도 타운하우스",
-        lifestyle: "사회 공헌 활동과 후학 양성에 집중하며 여유롭고 명예로운 라이프스타일",
-        relationships: "자녀들이 독립하여 성공적인 삶을 살고 있음",
+        story: `(AI 시뮬레이션 - 20년 후) 20년이 지난 지금, 당신의 초기 선택은 세상을 바꾸는 혁신을 이끌었습니다. 당신의 이름은 역사에 기록되었고, 많은 이들의 롤모델이 되었습니다. 이제는 다음 세대를 위한 길을 닦으며 평화롭고 의미 있는 삶을 살고 있습니다.`,
+        job: "은퇴 후 AI 자문 위원 / 투자자",
+        salary: "측정 불가 (자산가)",
+        residence: "제주도 해변가 저택",
+        lifestyle: "자유로운 영혼으로 전 세계를 여행하며 영감을 주는 삶",
+        relationships: "손주들과 행복한 시간, 배우자와 변함없는 사랑",
         timeline: [
-          { year: '11년차', event: '성공적인 스타트업 창업 및 투자 유치' },
-          { year: '13년차', event: '사업 확장, 사회적 기업으로 성장' },
-          { year: '15년차', event: '자서전 출간, 베스트셀러 등극' },
-          { year: '18년차', event: '대학교 겸임교수로 후학 양성' },
-          { year: '20년차', event: '명예로운 은퇴, 사회 공헌 재단 설립' },
+          { year: '11년차', event: '성공적인 기업 매각, 새로운 도전 모색' },
+          { year: '13년차', event: '인공지능 교육 재단 설립' },
+          { year: '15년차', event: '유엔(UN) 자문 위원 활동 시작' },
+          { year: '18년차', event: '회고록 출간, 전 세계 독자들에게 감동 선사' },
+          { year: '20년차', event: '노벨 평화상 후보 지명' },
         ],
       },
     };
     setSimulationResults(dummyResults);
     setSelectedTimeframe('5years'); // Show 5-year results by default after simulation
+  };
+
+  // Function to handle downloading the report
+  const handleDownloadReport = async () => {
+    if (!simulationResults) {
+      alert('시뮬레이션 결과를 먼저 생성해주세요!');
+      return;
+    }
+
+    try {
+      const saveResults = httpsCallable(firebaseFunctions, 'saveResultsToFile');
+      const response = await saveResults({ results: simulationResults });
+
+      if (response.data.success) {
+        const { fileName, fileContent, fileType } = response.data;
+        const decodedContent = atob(fileContent); // Decode base64
+        const blob = new Blob([decodedContent], { type: fileType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('시뮬레이션 보고서가 다운로드되었습니다!');
+      } else {
+        alert('보고서 다운로드에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      alert('보고서 다운로드 중 오류가 발생했습니다: ' + error.message);
+    }
   };
 
   const currentResults = simulationResults ? simulationResults[selectedTimeframe] : null;
@@ -262,6 +297,9 @@ function App() {
                       [여기에 공유할 결과 이미지가 표시됩니다]
                     </div>
                   </div>
+                  <button className="download-button" onClick={handleDownloadReport}>
+                    <i className="fas fa-download"></i> 시뮬레이션 보고서 다운로드
+                  </button>
                 </div>
               )}
             </>
