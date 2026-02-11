@@ -1,6 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { httpsCallable } from "firebase/functions";
 import './App.css';
+
+// ASCII Art for Crystal Ball (Loading State)
+const crystalBallAscii = `
+     .-------.
+    /         \\
+   /    .-.    \\
+  |    /   \\    |
+  |   |  @  |   |
+  |    \\   /    |
+   \\    '-'    /
+    \\         /
+     '-------'
+`;
+
+// Helper function to generate ASCII bar graph
+const generateAsciiBar = (percentage) => {
+  const filled = Math.round(percentage / 10);
+  const empty = 10 - filled;
+  return '█'.repeat(filled) + '░'.repeat(empty);
+};
+
+const resultSound = new Audio('/sounds/beep.mp3'); // Assuming a beep.mp3 exists in public/sounds
 
 function App({ firebaseFunctions }) {
   const [formData, setFormData] = useState({
@@ -16,7 +38,27 @@ function App({ firebaseFunctions }) {
   const [selectedTimeframe, setSelectedTimeframe] = useState('5years');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [conversationHistory, setConversationHistory] = useState([]); // New conversation history state
+  const [conversationHistory, setConversationHistory] = useState([]);
+  const [glitchEffect, setGlitchEffect] = useState(false); // New glitch effect state
+  const resultsRef = useRef(null); // Ref for scrolling to results
+
+  useEffect(() => {
+    if (simulationResults) {
+      // Trigger glitch effect and sound when results are loaded
+      setGlitchEffect(true);
+      if (resultSound) {
+        resultSound.play().catch(e => console.error("Error playing sound:", e));
+      }
+      const timer = setTimeout(() => {
+        setGlitchEffect(false);
+        // Scroll to results after glitch effect
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 500); // Glitch duration
+
+      return () => clearTimeout(timer);
+    }
+  }, [simulationResults]);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -105,7 +147,7 @@ function App({ firebaseFunctions }) {
   const currentResults = simulationResults ? simulationResults[selectedTimeframe] : null;
 
   return (
-    <div className="App">
+    <div className={`App ${glitchEffect ? 'glitch' : ''}`}> {/* Apply glitch class */}
       <header className="App-header">
         <h1>멀티버스 라이프: AI 평행세계 인생 시뮬레이터</h1>
         <p>선택 하나로 인생은 얼마나 달라질까?</p>
@@ -228,9 +270,14 @@ function App({ firebaseFunctions }) {
           {error && <p className="error-message">{error}</p>}
         </section>
 
-        <section className="results-section">
+        <section className="results-section" ref={resultsRef}>
           <h2>AI가 시뮬레이션한 당신의 평행세계</h2>
-          {isLoading && <p className="loading-message">AI가 당신의 운명을 시뮬레이션 중입니다...</p>}
+          {isLoading && 
+            <div className="loading-state">
+              <pre className="crystal-ball">{crystalBallAscii}</pre>
+              <p className="loading-message">AI가 당신의 운명을 시뮬레이션 중입니다...</p>
+            </div>
+          }
           {simulationResults ? (
             <>
               <div className="timeframe-selector">
@@ -277,7 +324,10 @@ function App({ firebaseFunctions }) {
                     <div className="fate-index-section">
                       <h4>운명 지수</h4>
                       {Object.entries(currentResults.fateIndex).map(([key, value]) => (
-                        <p key={key}><strong>{key}:</strong> {value}</p>
+                        <p key={key}>
+                          <strong>{key}:</strong> {value}
+                          <span className="ascii-bar">{generateAsciiBar(parseInt(value))}</span>
+                        </p>
                       ))}
                     </div>
                   )}

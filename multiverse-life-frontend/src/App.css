@@ -29,6 +29,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  position: relative; /* Needed for glitch effect */
 }
 
 .App-header {
@@ -275,7 +276,18 @@ body {
 .fate-index-section p {
   margin: 5px 0;
   font-size: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.fate-index-section .ascii-bar {
+  font-family: monospace;
+  font-size: 1.2em;
+  color: var(--primary-color);
+  letter-spacing: -2px; /* Adjust spacing to make bars look solid */
+}
+
 
 .action-guideline-section ul {
   list-style: none;
@@ -356,6 +368,35 @@ body {
   font-size: 1.1em;
 }
 
+/* Loading state styles */
+.loading-state {
+  margin-top: 30px;
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.crystal-ball {
+  font-family: monospace; /* Ensure ASCII art renders correctly */
+  font-size: 1.2em;
+  line-height: 1;
+  margin: 0 auto;
+  white-space: pre; /* Preserve whitespace for ASCII art */
+  color: var(--secondary-color);
+  text-shadow: 0 0 5px rgba(255, 193, 7, 0.5); /* Glow effect */
+  animation: pulse 1.5s infinite alternate; /* Simple animation */
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
 .loading-message {
   color: var(--primary-color);
   font-size: 1.2em;
@@ -367,6 +408,32 @@ body {
   color: #d32f2f; /* Red for errors */
   font-weight: bold;
   margin-top: 10px;
+}
+
+/* Glitch effect styles */
+.glitch {
+  animation: glitch-effect 0.5s linear infinite;
+}
+
+@keyframes glitch-effect {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
 }
 
 
