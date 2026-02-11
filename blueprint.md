@@ -1,31 +1,50 @@
-# Blueprint: 평행세계 인생 체험 서비스
+# Multiverse Life: AI 평행세계 인생 시뮬레이터 - Blueprint
 
-## Overview
+## 1. 개요
+"멀티버스 라이프"는 사용자가 기본 정보를 입력하고 "만약 ~했더라면?"이라는 가상 시나리오를 선택하면, AI가 해당 시나리오에 따른 인생 스토리를 시뮬레이션하여 시각적인 데이터(연봉 그래프, 거주지, 가족 구성, 직업 등)와 이미지(미래 모습)를 제공하는 웹 애플리케이션입니다. 사용자들은 생성된 결과를 소셜 미디어에 쉽게 공유하여 바이럴을 유도할 수 있습니다.
 
-This project is the world's first "Parallel World Life Experience Service," an AI-powered life simulation website. It allows users to input their current information and explore alternative life paths based on different choices they could have made.
+## 2. 상세 개요 (구현된 기능)
+_현재까지 구현된 기능은 없습니다._
 
-## Project Outline
+## 3. 현재 작업 계획
 
-### Design and Style
+### 목표
+"멀티버스 라이프" 애플리케이션의 초기 프로토타입을 구축합니다. 이는 React 기반의 프론트엔드와 Node.js/Express.js 기반의 백엔드 구조를 가지며, AI 모델 연동을 위한 플레이스홀더를 포함합니다.
 
-*   **Aesthetics:** Modern, clean, and visually engaging. The UI will be intuitive and user-friendly.
-*   **Color Palette:** A futuristic and mysterious palette, primarily using deep blues, purples, and blacks, with contrasting bright colors for highlights and interactive elements.
-*   **Typography:** A modern sans-serif font for readability, with a more stylized font for headings.
-*   **Layout:** A single-page application layout. The main sections will be:
-    *   **Hero Section:** A captivating title and a brief introduction to the service.
-    *   **Input Section:** A form for users to input their current life information.
-    *   **Simulation Results Section:** A section to display the generated parallel life paths.
-*   **Interactivity:** Smooth transitions and animations to enhance the user experience.
+### 단계별 계획
+1.  **프로젝트 설정:**
+    *   React 프로젝트 초기화 (`create-react-app` 또는 `Vite` 사용).
+    *   필요한 의존성 설치 (예: Bootstrap, React Router 등).
+    *   기본 파일 구조 설정.
 
-### Features
+2.  **프론트엔드 핵심 UI 구축:**
+    *   **STEP 1: 기본 정보 입력 폼:**
+        *   나이, 성별, 현재 직업/전공, 성격(선택형), 고민(선택)을 입력받는 UI 구성.
+        *   Bootstrap을 활용하여 반응형 디자인 적용.
+    *   **STEP 2: 분기 선택 UI:**
+        *   "만약 ○○했더라면?" 시나리오(다른 대학 선택, 해외 유학, 창업 등)를 선택하는 UI 구성 (카드 또는 라디오 버튼 형태).
+    *   **STEP 3: AI 인생 시뮬레이션 결과 표시 UI:**
+        *   로딩/진행률 표시기 구현.
+        *   연봉 변화 그래프 (차트 라이브러리 활용 예정).
+        *   10년 후 거주지, 가족 구성, 직업, 연애/결혼 스토리, 인생 스토리 요약을 표시할 영역 구성.
+        *   미래 모습 이미지(AI 생성) 표시 영역 구성. 초기에는 플레이스홀더 이미지 사용.
 
-*   **User Input Form:** A form to collect the user's current information, such as age, career, and key life decisions.
-*   **AI-Powered Simulation:** A JavaScript-based simulation engine that generates alternative life scenarios based on user input.
-*   **Dynamic Results Display:** The simulation results will be displayed in a visually appealing and easy-to-understand format.
+3.  **백엔드 통합 (Mock API):**
+    *   AI 시뮬레이션 결과를 임시로 반환하는 Mock API 엔드포인트 구현 (Node.js/Express.js).
+    *   프론트엔드와 Mock API 간의 통신 확인.
 
-## Current Plan
+4.  **AI 통합 (플레이스홀더):**
+    *   LLM(Large Language Model) 및 이미지 생성 AI 서비스 호출을 위한 플레이스홀더 함수 또는 인터페이스 정의. 실제 AI 모델과의 연동은 추후 진행.
 
-1.  **Create the basic HTML structure:** Set up the main sections of the website in `index.html`.
-2.  **Apply modern and futuristic styling:** Style the website using `style.css` to create an immersive experience.
-3.  **Implement the simulation logic:** Write the JavaScript code in `main.js` to handle user input and generate life simulations.
-4.  **Refine and enhance:** Iteratively improve the design, features, and simulation logic based on feedback and testing.
+5.  **결과 화면 (SNS 공유 구조) 구현:**
+    *   생성된 시뮬레이션 결과를 요약하여 SNS 공유용 카드 자동 생성 기능 UI 구현.
+    *   공유 버튼 추가.
+
+6.  **UI/UX 개선 및 반응형 디자인:**
+    *   현대적인 디자인 원칙(Material Design 등) 적용.
+    *   애니메이션, 시각 효과 추가.
+    *   모든 화면에서 반응형 디자인이 올바르게 작동하는지 확인.
+
+7.  **테스트:**
+    *   기본적인 프론트엔드 컴포넌트 및 API 연동 테스트.
+    *   (추후) 통합 테스트 및 E2E 테스트.
