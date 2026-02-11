@@ -152,7 +152,8 @@ body {
 }
 
 .simulate-button,
-.download-button { /* Apply common styles to both buttons */
+.download-button,
+.bm-button { /* Apply common styles to all buttons */
   background-color: var(--primary-color);
   color: var(--text-light);
   border: none;
@@ -164,17 +165,24 @@ body {
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-top: 20px; /* Add margin to separate from other elements */
+  width: 100%; /* Make buttons full width in results section */
+  max-width: 300px; /* Limit width */
+  display: block; /* Ensure margin-top works */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .simulate-button:hover,
-.download-button:hover {
+.download-button:hover,
+.bm-button:hover {
   background-color: #43a047; /* Slightly darker green */
   box-shadow: 0 6px 12px var(--button-hover-shadow);
   transform: translateY(-2px);
 }
 
 .simulate-button:active,
-.download-button:active {
+.download-button:active,
+.bm-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px var(--button-hover-shadow);
 }
@@ -244,6 +252,50 @@ body {
   color: var(--primary-color);
 }
 
+/* Styles for fate index and action guideline */
+.fate-index-section,
+.action-guideline-section {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background-color: #f0f8f0; /* Light green background */
+  border-radius: 10px;
+  border: 1px solid #d4edda;
+}
+
+.fate-index-section h4,
+.action-guideline-section h4 {
+  color: var(--primary-color);
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  border-bottom: 1px dashed var(--primary-color);
+  padding-bottom: 5px;
+}
+
+.fate-index-section p {
+  margin: 5px 0;
+  font-size: 1em;
+}
+
+.action-guideline-section ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.action-guideline-section li {
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.action-guideline-section li::before {
+  content: '💡'; /* Lightbulb icon */
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 .timeline {
   list-style: none;
   padding: 0;
@@ -266,6 +318,29 @@ body {
   line-height: 1;
 }
 
+/* Styles for Image of Destiny */
+.image-of-destiny {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #e0f2f7; /* Light blue background */
+  border-radius: 10px;
+  border: 1px solid #b2ebf2;
+}
+
+.image-of-destiny p {
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.image-of-destiny img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
 .share-card-placeholder {
   margin-top: 30px;
   padding: 20px;
@@ -279,6 +354,19 @@ body {
 .share-card-placeholder p {
   font-weight: bold;
   font-size: 1.1em;
+}
+
+.loading-message {
+  color: var(--primary-color);
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #d32f2f; /* Red for errors */
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 

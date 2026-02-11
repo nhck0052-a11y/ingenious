@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { httpsCallable } from "firebase/functions"; // Import httpsCallable
+import { httpsCallable } from "firebase/functions";
 import './App.css';
 
-function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
+function App({ firebaseFunctions }) {
   const [formData, setFormData] = useState({
     age: '',
     gender: '',
     majorJob: '',
     personality: '',
-    currentWorries: '',
+    currentWorries: '', // Changed to string for comma-separated keywords
     scenario: '',
   });
 
   const [simulationResults, setSimulationResults] = useState(null);
-  const [selectedTimeframe, setSelectedTimeframe] = useState('5years'); // '5years', '10years', '20years'
+  const [selectedTimeframe, setSelectedTimeframe] = useState('5years');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [conversationHistory, setConversationHistory] = useState([]); // New conversation history state
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,61 +27,49 @@ function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
     setFormData({ ...formData, scenario: e.target.value });
   };
 
-  const const handleSimulate = () => {
-    // --- Dummy Simulation Logic (will be replaced by actual AI call) ---
-    // This dummy data now uses formData.scenario for better representation
-    const dummyResults = {
-      '5years': {
-        story: `(AI 시뮬레이션 - 5년 후) 당신이 "${formData.scenario}" 선택했다면, 새로운 환경에서 역량을 발휘하며 안정적인 성장을 이루었습니다. 초기에는 어려움도 있었지만, 당신의 끈기와 노력이 빛을 발했습니다. 새로운 사람들과의 관계 속에서 삶의 활력을 찾고 있습니다.`,
-        job: "주니어 AI 전문가",
-        salary: "6천만원",
-        residence: "판교 테크노밸리 근처 소형 오피스텔",
-        lifestyle: "스타트업 문화에 푹 빠져 일과 성장에 몰두하는 삶",
-        relationships: "직장 동료들과의 돈독한 유대 형성, 새로운 인연을 기다리는 중",
-        timeline: [
-          { year: '1년차', event: `새로운 분야 학습 및 ${formData.scenario} 관련 프로젝트 참여` },
-          { year: '2년차', event: '핵심 팀원으로 인정받고 중요한 역할 수행' },
-          { year: '3년차', event: '첫 창업 제안을 받거나 이직 기회 모색' },
-          { year: '4년차', event: '자기 계발을 위한 해외 워크숍 참여' },
-          { year: '5년차', event: '업계 내에서 이름 알리기 시작, 멘토 역할 수행' },
-        ],
-      },
-      '10years': {
-        story: `(AI 시뮬레이션 - 10년 후) 당신의 선택은 거대한 성공의 씨앗이 되어, 이제는 해당 분야의 선구자로 자리매김했습니다. 수많은 팔로워와 협력자가 당신의 비전을 따르며, 사회에 큰 영향력을 행사하고 있습니다. 여유와 함께 찾아온 책임감으로 더욱 겸손해질 것입니다.`,
-        job: "시니어 AI 분석가 / 팀 리더",
-        salary: "2억원 이상",
-        residence: "강남 고급 주상복합 아파트",
-        lifestyle: "성공한 사업가로서 사회적 책임감을 느끼며 워라밸을 추구하는 삶",
-        relationships: "오랜 연인과 결혼하여 안정적인 가정을 이룸",
-        timeline: [
-          { year: '6년차', event: '석사 학위 취득, 전문성 심화' },
-          { year: '7년차', event: '해외 지사 파견, 글로벌 경험 축적' },
-          { year: '8년차', event: '부동산 투자 성공, 자산 증식 시작' },
-          { year: '9년차', event: '결혼 및 자녀 출산' },
-          { year: '10년차', event: '자신만의 사업 아이템 구상 시작' },
-        ],
-      },
-      '20years': {
-        story: `(AI 시뮬레이션 - 20년 후) 20년이 지난 지금, 당신의 초기 선택은 세상을 바꾸는 혁신을 이끌었습니다. 당신의 이름은 역사에 기록되었고, 많은 이들의 롤모델이 되었습니다. 이제는 다음 세대를 위한 길을 닦으며 평화롭고 의미 있는 삶을 살고 있습니다.`,
-        job: "은퇴 후 AI 자문 위원 / 투자자",
-        salary: "측정 불가 (자산가)",
-        residence: "제주도 해변가 저택",
-        lifestyle: "자유로운 영혼으로 전 세계를 여행하며 영감을 주는 삶",
-        relationships: "손주들과 행복한 시간, 배우자와 변함없는 사랑",
-        timeline: [
-          { year: '11년차', event: '성공적인 기업 매각, 새로운 도전 모색' },
-          { year: '13년차', event: '인공지능 교육 재단 설립' },
-          { year: '15년차', event: '유엔(UN) 자문 위원 활동 시작' },
-          { year: '18년차', event: '회고록 출간, 전 세계 독자들에게 감동 선사' },
-          { year: '20년차', event: '노벨 평화상 후보 지명' },
-        ],
-      },
-    };
-    setSimulationResults(dummyResults);
-    setSelectedTimeframe('5years'); // Show 5-year results by default after simulation
+  const handleSimulate = async () => {
+    setError(null);
+    setIsLoading(true);
+    setSimulationResults(null); // Clear previous results
+
+    try {
+      const simulateLifeCallable = httpsCallable(firebaseFunctions, 'simulateLife');
+      
+      // Prepare data for the Firebase Function call, including conversation history
+      const requestData = {
+        ...formData,
+        conversationHistory: conversationHistory,
+      };
+
+      const response = await simulateLifeCallable(requestData);
+
+      if (response.data.success) {
+        setSimulationResults(response.data.results);
+        setSelectedTimeframe('5years'); // Show 5-year results by default
+
+        // Update conversation history
+        const newHistoryEntry = {
+          role: "user",
+          text: `나이: ${formData.age}, 성별: ${formData.gender}, 직업: ${formData.majorJob}, 성격: ${formData.personality}, 고민: ${formData.currentWorries}, 선택: ${formData.scenario}`,
+        };
+        const aiResponseEntry = {
+          role: "model",
+          text: `5년 후: ${response.data.results['5years'].story}`, // Simplified summary for history
+        };
+        setConversationHistory(prevHistory => [...prevHistory, newHistoryEntry, aiResponseEntry]);
+
+      } else {
+        setError('시뮬레이션 결과를 가져오지 못했습니다.');
+        console.error('Simulation failed:', response.data.error);
+      }
+    } catch (err) {
+      setError('시뮬레이션 중 오류가 발생했습니다: ' + err.message);
+      console.error('Error during simulation:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Function to handle downloading the report
   const handleDownloadReport = async () => {
     if (!simulationResults) {
       alert('시뮬레이션 결과를 먼저 생성해주세요!');
@@ -166,14 +157,15 @@ function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
             />
           </div>
           <div className="form-group">
-            <label htmlFor="currentWorries">현재 고민:</label>
-            <textarea
+            <label htmlFor="currentWorries">현재 고민 (쉼표로 구분):</label>
+            <input
+              type="text"
               id="currentWorries"
               name="currentWorries"
               value={formData.currentWorries}
               onChange={handleInputChange}
-              placeholder="예: 커리어 전환, 재정적 불안정"
-            ></textarea>
+              placeholder="예: #이직, #짝사랑, #로또"
+            />
           </div>
 
           <h3>인생 분기 선택지:</h3>
@@ -230,13 +222,15 @@ function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
             </label>
           </div>
 
-          <button className="simulate-button" onClick={handleSimulate}>
-            AI로 시뮬레이션 하기
+          <button className="simulate-button" onClick={handleSimulate} disabled={isLoading}>
+            {isLoading ? '시뮬레이션 중...' : 'AI로 시뮬레이션 하기'}
           </button>
+          {error && <p className="error-message">{error}</p>}
         </section>
 
         <section className="results-section">
           <h2>AI가 시뮬레이션한 당신의 평행세계</h2>
+          {isLoading && <p className="loading-message">AI가 당신의 운명을 시뮬레이션 중입니다...</p>}
           {simulationResults ? (
             <>
               <div className="timeframe-selector">
@@ -263,6 +257,12 @@ function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
               {currentResults && (
                 <div className="simulation-output">
                   <h3>{selectedTimeframe === '5years' ? '5년 후' : selectedTimeframe === '10years' ? '10년 후' : '20년 후'}</h3>
+                  {currentResults.imageUrl && (
+                    <div className="image-of-destiny">
+                      <p>✨ 운명의 이미지 ✨</p>
+                      <img src={currentResults.imageUrl} alt="AI Generated Destiny" />
+                    </div>
+                  )}
                   <p className="life-story">{currentResults.story}</p>
 
                   <div className="data-points">
@@ -272,6 +272,26 @@ function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
                     <p><strong>라이프스타일:</strong> {currentResults.lifestyle}</p>
                     <p><strong>연애 및 결혼 스토리:</strong> {currentResults.relationships}</p>
                   </div>
+                  
+                  {currentResults.fateIndex && (
+                    <div className="fate-index-section">
+                      <h4>운명 지수</h4>
+                      {Object.entries(currentResults.fateIndex).map(([key, value]) => (
+                        <p key={key}><strong>{key}:</strong> {value}</p>
+                      ))}
+                    </div>
+                  )}
+
+                  {currentResults.actionGuideline && (
+                    <div className="action-guideline-section">
+                      <h4>행동 지침</h4>
+                      <ul>
+                        {currentResults.actionGuideline.map((item, index) => (
+                          <li key={index}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
                   <h4>인생 주요 이벤트 타임라인</h4>
                   <ul className="timeline">
@@ -299,6 +319,9 @@ function App({ firebaseFunctions }) { // Receive firebaseFunctions prop
                   </div>
                   <button className="download-button" onClick={handleDownloadReport}>
                     <i className="fas fa-download"></i> 시뮬레이션 보고서 다운로드
+                  </button>
+                  <button className="bm-button" onClick={() => alert('실제 결제는 아닙니다! 비즈니스 모델 확장성을 보여주는 버튼입니다.')}>
+                    당신의 운명을 바꿀 부적 구매하기
                   </button>
                 </div>
               )}
